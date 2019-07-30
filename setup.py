@@ -3,7 +3,10 @@ quentem_mechenex
 HF and MP2 in python, with optimized Fock build in C++ wrapped with PYBIND11
 """
 import sys
-from setuptools import setup, find_packages
+from setuptools import setup, find_packages, Extension
+import versioneer
+import os
+import platform
 import versioneer
 
 short_description = __doc__.split("\n")
@@ -17,6 +20,26 @@ try:
         long_description = handle.read()
 except:
     long_description = "\n".join(short_description[2:]),
+
+#################################################################
+# Build our C++ module
+# NOTE: Pybind11/Eigen were installed into CONDA_PREFIX
+#       so we need to add that to the include paths
+conda_prefix = os.environ['CONDA_PREFIX']
+eigen_path = os.path.join(conda_prefix, 'include', 'eigen3')
+
+# MacOSX causes some problems. This is due to a recent
+# deprecation of the stdc++ library
+
+if sys.platform == 'darwin':
+    os.environ['MACOSX_DEPLOYMENT_TARGET'] = platform.mac_ver()[0]
+
+fock_fast = Extension('fock_cpp.fock_fast',
+                        include_dirs = [eigen_path],
+                        extra_compile_args = ['-std=c++11'],
+                        sources = ['fock_cpp/fock_fast.cpp',
+                                   'fock_cpp/fock_fast_wrapper.cpp'])
+########################################i#########################
 
 
 setup(
@@ -56,4 +79,8 @@ setup(
     # Manual control if final package is compressible or not, set False to prevent the .egg from being made
     # zip_safe=False,
 
+
+
+    # Include the compiled extension
+    ext_modules = [fock_fast]
 )
