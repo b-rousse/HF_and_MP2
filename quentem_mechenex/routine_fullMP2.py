@@ -4,7 +4,7 @@ import hartree_fock as hf
 import noble_gas_model as noble_gas_model
 
 if __name__ == "__main__":
-    NobleGasModel = noble_gas_model.NobleGasModl()
+    NobleGasModel = noble_gas_model.NobleGasModel()
     atomic_coordinates = np.array([[0.0,0.0,0.0], [3.0,4.0,5.0]])
     mp2_instance = mp2.MP2(NobleGasModel,atomic_coordinates)
     mp2_instance.density_matrix = mp2_instance.calculate_atomic_density_matrix(NobleGasModel)

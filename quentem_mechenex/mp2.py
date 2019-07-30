@@ -1,6 +1,6 @@
 import numpy as np
-from hartree_fock import HartreeFock
-from noble_gas_model import NobleGasModl
+from quentem_mechenex.hartree_fock import HartreeFock
+#from quentem_mechenex.noble_gas_model import NobleGasModel
 
 class MP2(HartreeFock):
     def __init__(self, NobleGasModel, atomic_coordinates):

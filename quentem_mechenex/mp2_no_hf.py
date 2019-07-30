@@ -1,6 +1,6 @@
 import numpy as np
-from hartree_fock import HartreeFock
-from noble_gas_model import NobleGasModl
+from quentem_mechenex.hartree_fock import HartreeFock
+from quentem_mechenex.noble_gas_model import NobleGasModel
 """
 This class takes an instance of HartreeFock and NobelGas and is able to calculate the MP2 energy correction on top of the HF energy
 """

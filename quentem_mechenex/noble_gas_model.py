@@ -1,4 +1,4 @@
-class NobleGasModl():
+class NobleGasModel():
     def __init__(self):
         self.model_parameters = {
             'r_hop' : 3.1810226927827516, # hopping length scale
