@@ -8,21 +8,38 @@ import pytest
 import sys
 import numpy as np
 
-def test_calculate_energy_ion():
+@pytest.fixture()
+def noble_gas_instance():
     noble_gas_instance = qm.NobleGasModel()
+    return noble_gas_instance
+
+@pytest.fixture()
+def hartree_fock_instance(noble_gas_instance):
     atomic_coordinates = np.array([[0.0,0.0,0.0], [3.0,4.0,5.0]])
     hartree_fock_instance = qm.HartreeFock(noble_gas_instance, atomic_coordinates)
-    #hartree_fock_instance.density_matrix = hartree_fock_instance.calculate_atomic_density_matrix(noble_gas_instance)
-    #hartree_fock_instance.density_matrix, hartree_fock_instance.fock_matrix = hartree_fock_instance.scf_cycle(noble_gas_instance)
-    #hartree_fock_instance.energy_scf = hartree_fock_instance.calculate_energy_scf()
-    #hartree_fock_instance.energy_ion = hartree_fock_instance.calculate_energy_ion(noble_gas_instance)
-    #print(F'The SCF energy is  {hartree_fock_instance.energy_scf} and the ion energy is {hartree_fock_instance.energy_ion} ')
-    #mp2_instance = qm.MP2(NobleGasModel,atomic_coordinates)
-    #mp2_instance.mp2_energy = mp2_instance.calculate_energy_mp2()
-    #print(F'The MP2 energy is {mp2_instance.mp2_energy}')
-    #mp2_standalone_instance = qm.MP2NoHF(hartree_fock_instance, NobleGasModel)
-    #mp2_iso_energy = mp2_standalone_instance.calculate_energy_mp2()
-    expected_energy_ion = 5.091168824543142
-    calculated_energy_ion = hartree_fock_instance.calculate_energy_ion (noble_gas_instance)
-    assert np.isclose (expected_energy_ion, calculated_energy_ion)
+    return hartree_fock_instance
 
+def test_nbg_fixture(noble_gas_instance):
+    atomic_coordinates = np.array([[0.0, 0.0, 0.0], [3.0, 4.0, 5.0]])
+    number_of_atoms = len(atomic_coordinates)
+    nbg1 = noble_gas_instance
+    for index in range(number_of_atoms * nbg1.orbitals_per_atom):
+        assert (index == nbg1.ao_index(nbg1.atom(index), nbg1.orb(index)))
+
+def test_hf_fixture(hartree_fock_instance):
+    my_ac = np.array([[0.0,0.0,0.0], [3.0,4.0,5.0]])
+    assert(my_ac.all() == hartree_fock_instance.atomic_coordinates.all())
+
+def test_calculate_energy_ion(hartree_fock_instance, noble_gas_instance):
+    expected_energy_ion = 5.091168824543142
+    calculated_energy_ion = hartree_fock_instance.calculate_energy_ion(noble_gas_instance)
+    assert np.isclose(expected_energy_ion, calculated_energy_ion)
+
+def test_calculate_coloumb_energy(hartree_fock_instance, noble_gas_instance):
+    coulomb_vector = np.array([1,0,0])
+    assert np.isclose (1.0, hartree_fock_instance.calculate_coulomb_energy('s','s',coulomb_vector, noble_gas_instance))
+    assert np.isclose (1.0, hartree_fock_instance.calculate_coulomb_energy('s','px',coulomb_vector, noble_gas_instance))
+    assert np.isclose (-2.0, hartree_fock_instance.calculate_coulomb_energy('px','px',coulomb_vector, noble_gas_instance))
+    assert np.isclose (0.0, hartree_fock_instance.calculate_coulomb_energy('s','py',coulomb_vector, noble_gas_instance))
+    assert np.isclose (0.0, hartree_fock_instance.calculate_coulomb_energy('px','py',coulomb_vector, noble_gas_instance))
+    assert np.isclose (1.0, hartree_fock_instance.calculate_coulomb_energy('py','py',coulomb_vector, noble_gas_instance))
