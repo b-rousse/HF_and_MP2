@@ -1,8 +1,11 @@
 .. qm5 Documentation Master file, created by the master 
 
 
+
+.. image:: qm5.png
+
 Overview
-=====================================================
+========
 
 This package performs an approximate method to finding the energy of a Noble Gas, it relies on the Slater-Koster binding model, coulomb interaction, multipole decomposition and a regular Hartree Fock calculation with an MP2 correction
 
@@ -15,10 +18,8 @@ Avaliable molecules:
     :maxdepth: 2
     :caption: Contents
 
-    Noble Gas Model
-    Hartree Fock 
-    MP2 
-    Hartree Fock ++
+    api
+    Noble_Gas_Noble
 
 Indices and tables
 ==================
