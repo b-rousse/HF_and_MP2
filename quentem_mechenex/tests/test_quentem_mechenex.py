@@ -43,3 +43,9 @@ def test_calculate_coloumb_energy(hartree_fock_instance, noble_gas_instance):
     assert np.isclose (0.0, hartree_fock_instance.calculate_coulomb_energy('s','py',coulomb_vector, noble_gas_instance))
     assert np.isclose (0.0, hartree_fock_instance.calculate_coulomb_energy('px','py',coulomb_vector, noble_gas_instance))
     assert np.isclose (1.0, hartree_fock_instance.calculate_coulomb_energy('py','py',coulomb_vector, noble_gas_instance))
+
+def test_hartree_fock_hopping(hartree_fock_instance, noble_gas_instance):
+    """Test for hopping_energy function in hartree fock"""
+    hop_vector = np.array([3.1810226927827516,0,0])
+    assert np.isclose( 0.03365982238611262 , hartree_fock_instance.calculate_hopping_energy( 's', 's' , hop_vector, noble_gas_instance))
+
