@@ -19,7 +19,7 @@
 
 # -- Project information -----------------------------------------------------
 
-project = 'qm5'
+project = 'quentem-mechenex'
 copyright = ("2019, qm5 team. Project structure based on the "
              "Computational Molecular Science Python Cookiecutter version 1.0")
 author = 'qm5 team'
