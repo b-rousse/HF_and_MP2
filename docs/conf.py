@@ -19,10 +19,10 @@
 
 # -- Project information -----------------------------------------------------
 
-project = 'quentem_mechenex'
-copyright = ("2019, Ben Rousseau. Project structure based on the "
+project = 'qm5'
+copyright = ("2019, qm5 team. Project structure based on the "
              "Computational Molecular Science Python Cookiecutter version 1.0")
-author = 'Ben Rousseau'
+author = 'qm5 team'
 
 # The short X.Y version
 version = ''
@@ -42,7 +42,11 @@ release = ''
 extensions = [
     'sphinx.ext.autodoc',
     'sphinx.ext.mathjax',
+    'sphinx.ext.autosummary', 
+    'sphinx.ext.napoleon'
 ]
+
+autosummary_generate = True
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
