@@ -7,7 +7,6 @@ from setuptools import setup, find_packages, Extension
 import versioneer
 import os
 import platform
-import versioneer
 
 short_description = __doc__.split("\n")
 

@@ -7,6 +7,7 @@ import quentem_mechenex as qm
 import pytest
 import sys
 import numpy as np
+import quentem_mechenex.fock_fast as fock_fast
 
 @pytest.fixture()
 def noble_gas_fixture():
@@ -30,6 +31,14 @@ def mp2_nohf_fixture(noble_gas_fixture):
     atomic_coordinates = np.array([[0.0,0.0,0.0], [3.0,4.0,5.0]])
     mp2_instance = qm.MP2NoHF(noble_gas_fixture, atomic_coordinates)
     return mp2_instance
+
+def test_fockfast_cpp_imported():
+    """Sample test, will always pass so long as import statement worked"""
+    assert "quentem_mechenex.fock_fast" in sys.modules
+
+def test_fockfast_mat_size(hartree_fock_fixture, noble_gas_fixture):
+    fastmatrix = fock_fast.calculate_fock_matrix_fast(hartree_fock_fixture.hamiltonian_matrix, hartree_fock_fixture.interaction_matrix, hartree_fock_fixture.density_matrix, noble_gas_fixture.model_parameters, noble_gas_fixture.orbitals_per_atom)
+    assert (fastmatrix.all() == hartree_fock_fixture.fock_matrix.all()) 
 
 def test_nbg_fixture(noble_gas_fixture):
     atomic_coordinates = np.array([[0.0, 0.0, 0.0], [3.0, 4.0, 5.0]])
