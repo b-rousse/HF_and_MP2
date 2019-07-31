@@ -5,13 +5,26 @@ HF and MP2 in python, with optimized Fock build in C++ wrapped with PYBIND11
 Handles the primary functions
 """
 import numpy as np
+import sys
 import quentem_mechenex.mp2 as mp2
 import quentem_mechenex.mp2_no_hf as mp2_no_hf
 import quentem_mechenex.hartree_fock as hf
 import quentem_mechenex.noble_gas_model as noble_gas_model
+import quentem_mechenex.fock_fast as fock_fast
 
-MP2inheritsHF = True
+if len(sys.argv) != 3:
+    print('Hello user! Are you aware you can call a fast Fock matrix build by passing fast-fock as an argument? And, by the way, you can also call a standalone MP2 class using mp2-no-hf')
 
+MP2inheritsHF = False
+use_fast_fock = False
+if "mp2-no-hf" in sys.argv:
+    MP2inheritsHF = True
+if "fast-fock" in sys.argv:
+    use_fast_fock = True
+for arg in sys.argv[1:]:
+    if arg not in ["mp2-no-hf","fast-fock"]:
+        print('Type properly, you idiot!')
+        assert(false)
 
 def canvas(with_attribution=True):
     """
@@ -50,7 +63,7 @@ if __name__ == "__main__":
         print(F'The MP2 energy is {mp2_instance.mp2_energy}')
 
     else:
-        hartree_fock_instance = hf.HartreeFock(NobleGasModel, atomic_coordinates)
+        hartree_fock_instance = hf.HartreeFock(NobleGasModel, atomic_coordinates, use_fast_fock)
         hartree_fock_instance.density_matrix = hartree_fock_instance.calculate_atomic_density_matrix(NobleGasModel)
         hartree_fock_instance.density_matrix, hartree_fock_instance.fock_matrix = hartree_fock_instance.scf_cycle(NobleGasModel)
         hartree_fock_instance.energy_scf = hartree_fock_instance.calculate_energy_scf()
@@ -59,4 +72,5 @@ if __name__ == "__main__":
         mp2_instance = mp2_no_hf.MP2NoHF(hartree_fock_instance, NobleGasModel)
         mp2_instance.mp2_energy = mp2_instance.calculate_energy_mp2()
         print(F'The MP2 energy is {mp2_instance.mp2_energy}')
+    
 

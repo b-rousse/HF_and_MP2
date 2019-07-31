@@ -37,6 +37,9 @@ install:
   - python devtools/scripts/create_conda_env.py -n=test -p=$PYTHON_VER devtools/conda-envs/test_env.yaml
     # Activate the test environment
   - conda activate test
+  - conda install numpy
+  - conda install pybind11
+  - conda install eigen
     # Build and install package
   - python setup.py develop --no-deps
 

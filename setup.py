@@ -7,7 +7,6 @@ from setuptools import setup, find_packages, Extension
 import versioneer
 import os
 import platform
-import versioneer
 
 short_description = __doc__.split("\n")
 
@@ -34,7 +33,7 @@ eigen_path = os.path.join(conda_prefix, 'include', 'eigen3')
 if sys.platform == 'darwin':
     os.environ['MACOSX_DEPLOYMENT_TARGET'] = platform.mac_ver()[0]
 
-fock_fast = Extension('fock_cpp.fock_fast',
+fock_fast = Extension('quentem_mechenex.fock_fast',
                         include_dirs = [eigen_path],
                         extra_compile_args = ['-std=c++11'],
                         sources = ['fock_cpp/fock_fast.cpp',
