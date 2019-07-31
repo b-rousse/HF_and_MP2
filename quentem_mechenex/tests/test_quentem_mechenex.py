@@ -25,6 +25,11 @@ def mp2_fixture(noble_gas_fixture):
     mp2_instance = qm.MP2(noble_gas_fixture, atomic_coordinates)
     return mp2_instance
 
+@pytest.fixture()
+def mp2_nohf_fixture(noble_gas_fixture):
+    atomic_coordinates = np.array([[0.0,0.0,0.0], [3.0,4.0,5.0]])
+    mp2_instance = qm.MP2NoHF(noble_gas_fixture, atomic_coordinates)
+    return mp2_instance
 
 def test_nbg_fixture(noble_gas_fixture):
     atomic_coordinates = np.array([[0.0, 0.0, 0.0], [3.0, 4.0, 5.0]])
@@ -57,6 +62,11 @@ def test_hartree_fock_hopping(hartree_fock_fixture, noble_gas_fixture):
     """Test for hopping_energy function in hartree fock"""
     hop_vector = np.array([3.1810226927827516,0,0])
     assert np.isclose( 0.03365982238611262 , hartree_fock_fixture.calculate_hopping_energy( 's', 's' , hop_vector, noble_gas_fixture))
+
+def test_density_matrix_trace(hartree_fock_fixture):
+       """Test that the trace of the density matrix is equal to the number of electrons in the entire system"""
+       dm = hartree_fock_fixture.density_matrix
+       assert np.isclose (np.trace(dm), 6.0)
 
 def test_mp2(hartree_fock_fixture, noble_gas_fixture):
     """Test the standalone MP2 module"""
