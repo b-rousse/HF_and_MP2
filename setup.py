@@ -35,7 +35,7 @@ if sys.platform == 'darwin':
 
 fock_fast = Extension('quentem_mechenex.fock_fast',
                         include_dirs = [eigen_path],
-                        extra_compile_args = ['-std=c++11'],
+                        extra_compile_args = ['-std=c++11', '-O3'],
                         sources = ['fock_cpp/fock_fast.cpp',
                                    'fock_cpp/fock_fast_wrapper.cpp'])
 ########################################i#########################
